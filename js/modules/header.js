@@ -95,6 +95,7 @@ function headerNav() {
 
 		if(isMobile) {
 			togglPos(header,  "fixed", "absolute")
+            header.classList.toggle("active");
 			togglangDisp(toggleLang,  "flex", "none")
 		}
 
