@@ -383,36 +383,60 @@ function stopActiveSlideVideo(swiper) {
 
 // Анимация ползунка
 function animateSlider() {
-	const sliderInput = document.getElementById("sliderInput");
-	const rightValue = document.getElementById("rightValue");
-	const emojiImage = document.getElementById("emojiImage");
+    const sliderInput = document.getElementById("sliderInput");
+    const rightValue = document.getElementById("rightValue");
+    const emojiImage = document.getElementById("emojiImage");
+    const emojiContainer = document.querySelector(".offer__slider__emoji");
+    const sliderBlock = document.querySelector(".offer__slider__values");
 
-	let startValue = parseInt(sliderInput.value);
-	const endValue = parseInt(sliderInput.max);
+    const leftValue = document.querySelector(".offer__slider__value-left");
+    const rightValueContainer = document.querySelector(".offer__slider__value-right");
 
-	// Анимация ползунка
-	function animate() {
-		if (startValue < endValue) {
-			startValue += 50; // скорость увеличения
-			sliderInput.value = startValue;
-			rightValue.textContent = startValue.toLocaleString("en-US");
+    let startValue = parseInt(sliderInput.value);
+    const endValue = parseInt(sliderInput.max);
+    const step = 50; // Скорость увеличения
 
-			// Изменение изображения эмодзи
-			if (startValue >= 1000 && startValue < 2000) {
-				emojiImage.src = "./icons/offer/1-2.svg";
-			} else if (startValue >= 2000 && startValue < 5000) {
-				emojiImage.src = "./icons/offer/2-5.svg";
-			} else if (startValue >= 5000 && startValue < 7000) {
-				emojiImage.src = "./icons/offer/5-7.svg";
-			} else if (startValue >= 7000 && startValue <= 10000) {
-				emojiImage.src = "./icons/offer/7-10.svg";
-			}
+    function updateEmojiPosition(value) {
+        const min = parseInt(sliderInput.min);
+        const max = parseInt(sliderInput.max);
 
-			requestAnimationFrame(animate);
-		}
-	}
+        // Изменение изображения эмодзи
+        if (value >= 1000 && value < 2000) {
+            emojiImage.src = "./icons/offer/1-2.svg";
+        } else if (value >= 2000 && value < 5000) {
+            emojiImage.src = "./icons/offer/2-5.svg";
+        } else if (value >= 5000 && value < 7000) {
+            emojiImage.src = "./icons/offer/5-7.svg";
+        } else if (value >= 7000 && value <= 10000) {
+            emojiImage.src = "./icons/offer/7-10.svg";
+        }
 
-	requestAnimationFrame(animate);
+        rightValue.textContent = value.toLocaleString("en-US");
+
+        // Учитываем отступы
+        const paddingOffset = 10;
+        const leftOffset = leftValue.clientWidth + paddingOffset;
+        const rightOffset = rightValueContainer.clientWidth + paddingOffset;
+        const sliderWidth = sliderBlock.clientWidth;
+
+        const availableWidth = sliderWidth - leftOffset - rightOffset - emojiContainer.clientWidth;
+        const percentage = (value - min) / (max - min);
+        const newPosition = leftOffset + (percentage * availableWidth);
+
+        emojiContainer.style.transform = `translateX(${newPosition}px)`;
+    }
+
+    function animate() {
+        if (startValue < endValue) {
+            startValue += step;
+            sliderInput.value = startValue;
+            updateEmojiPosition(startValue);
+            requestAnimationFrame(animate);
+        }
+    }
+
+    requestAnimationFrame(animate);
 }
+
 
 export default animation;
