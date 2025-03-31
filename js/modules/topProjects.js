@@ -70,6 +70,25 @@ function topProjects(cardSelector) {
 					video.currentTime = 0;
 				});
 			});
+
+			// Для мобильных: включаем видео по клику / касанию
+			card.addEventListener("touchend", () => {
+				const video =
+					card.querySelector(".swiper-slide-active video") || card.querySelector("video");
+				if (!video) return;
+
+				if (!video.src) {
+					video.src = video.dataset.src;
+					video.load(); // Загружаем перед запуском
+				}
+
+				if (video.paused) {
+					video.play();
+				} else {
+					video.pause();
+					video.currentTime = 0;
+				}
+			});
 		} else {
 			// Для ПК: включаем видео по наведению
 			card.addEventListener("mouseenter", () => {
@@ -88,14 +107,16 @@ function topProjects(cardSelector) {
 				video.currentTime = 0;
 			});
 
-			// Для мобильных: включаем видео по касанию
-
-			card.addEventListener("touchstart", () => {
+			// Для мобильных: включаем видео по клику / касанию
+			card.addEventListener("touchend", () => {
 				const video = card.querySelector("video");
 				if (!video) return;
+
 				if (!video.src) {
 					video.src = video.dataset.src;
+					video.load(); // Загружаем перед запуском
 				}
+
 				if (video.paused) {
 					video.play();
 				} else {
