@@ -174,6 +174,23 @@ function animation() {
 							this.params.slidesPerView = getSlidesPerView();
 							this.update();
 						},
+						init: function () {
+							const swiperInstance = this;
+
+							// Получаем все слайды
+							const slides = this.slides;
+
+							// Добавляем обработчик события для каждого слайда
+							slides.forEach((slide, index) => {
+								slide.addEventListener("click", function () {
+									// Используем slideToLoop для учета loop: true
+									swiperInstance.slideToLoop(
+										swiperInstance.realIndex +
+											(index - swiperInstance.activeIndex),
+									);
+								});
+							});
+						},
 					},
 				});
 			}
@@ -182,10 +199,10 @@ function animation() {
 				const resize = document.querySelector(".slider__resize");
 				const divider = document.querySelector(".slider__divider");
 				if (resize) {
-					resize.style.animation = "sliderAnimation 5s linear";
+					resize.style.animation = "sliderAnimation 3s linear";
 					setTimeout(() => {
 						divider.style.opacity = "1";
-					}, 5000);
+					}, 3000);
 				}
 			}
 
@@ -274,11 +291,11 @@ function animation() {
 				const divider = document.querySelector(".nfts__divider");
 				const title = document.querySelector(".nfts__title--white");
 				if (resize) {
-					resize.style.animation = "sliderAnimation 5s linear";
-					title.style.animation = "titleAnimation 5s linear";
+					resize.style.animation = "sliderAnimation 3s linear";
+					title.style.animation = "titleAnimation 3s linear";
 					setTimeout(() => {
 						divider.style.opacity = "1";
-					}, 5000);
+					}, 3000);
 				}
 			}
 			if (box.classList.contains("animation-go")) {
